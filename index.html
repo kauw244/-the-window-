@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>창 (The Window) - Interactive Art Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), 
+                        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%23334155" width="1200" height="800"/><rect fill="%23475569" x="300" y="200" width="600" height="400" rx="10"/><rect fill="%2387ceeb" x="320" y="220" width="560" height="360"/></svg>');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(102, 126, 234, 0.8), rgba(118, 75, 162, 0.8));
+            animation: breathe 4s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.6; }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .main-title {
+            font-size: 4rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        /* Sections */
+        .section {
+            padding: 80px 0;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .section:nth-child(even) {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+        }
+
+        .section-content {
+            width: 100%;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: white;
+            text-align: center;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-top: 3rem;
+        }
+
+        .content-text {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-visual {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .game-preview {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(45deg, #1e293b, #334155);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect fill="%231e293b" width="400" height="300"/><rect fill="%23475569" x="50" y="50" width="300" height="200" rx="5"/><rect fill="%2387ceeb" x="60" y="60" width="280" height="180"/><circle fill="%23fbbf24" cx="200" cy="80" r="20"/></svg>');
+            background-size: cover;
+            opacity: 0.7;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .feature-list li::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-size: 0.8rem;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .tech-item {
+            background: rgba(102, 126, 234, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .scenario-flow {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .scenario-step {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .scenario-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .scenario-step .step-number {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-weight: bold;
+        }
+
+        .play-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+        }
+
+        .play-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .section {
+                padding: 60px 0;
+            }
+            
+            .scenario-flow {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Parallax Effect */
+        .parallax-element {
+            position: fixed;
+            pointer-events: none;
+            opacity: 0.1;
+            z-index: 1;
+        }
+
+        .floating-window {
+            width: 60px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Parallax Elements -->
+    <div class="parallax-element floating-window" style="top: 10%; left: 5%; animation-delay: 0s;"></div>
+    <div class="parallax-element floating-window" style="top: 20%; right: 10%; animation-delay: 2s;"></div>
+    <div class="parallax-element floating-window" style="top: 60%; left: 15%; animation-delay: 4s;"></div>
+    <div class="parallax-element floating-window" style="bottom: 20%; right: 5%; animation-delay: 1s;"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1 class="main-title">창<br><span style="font-size: 2rem; font-style: italic;">The Window</span></h1>
+            <p class="subtitle">시간과 우연이 만나는 인터랙티브 아트 게임</p>
+            <button class="play-button" onclick="window.open('hospital_art_game.html', '_blank')">게임 플레이</button>
+        </div>
+        <div class="scroll-indicator">
+            <div style="color: white; font-size: 2rem;">↓</div>
+        </div>
+    </header>
+
+    <!-- Game Overview -->
+    <section class="section">
+        <div class="container">
+            <div class="section-content">
+                <h2 class="section-title">게임 개요</h2>
+                <div class="content-grid">
+                    <div class="content-text">
+                        <h3 style="margin-bottom: 1rem; color: #667eea;">핵심 컨셉</h3>
+                        <p style="margin-bottom: 1rem;">
+                            <strong>창(The Window)</strong>은 병원 창가에서 바라보는 풍경을 통해 시간의 흐름과 인생의 불확실성을 탐구하는 인터랙티브 아트 게임입니다.
+                        </p>
+                        <p style="margin-bottom: 1rem;">
+                            플레이어는 병원 환자가 되어 창밖의 낮과 밤이 천천히 바뀌는 모습을 관찰하며, 일주일마다 동전 던지기를 통해 자신의 운명을 결정합니다.
+                        </p>
+                        <p>
+                            게임은 완치 또는 사망으로 끝나며, 사망 시에는 다시 플레이할 수 없어 선택의 무게와 시간의 소중함을 강조합니다.
+                        </p>
+                    </div>
+                    <div class="content-visual">
+                        <div class="game-preview">
+                            <div style="position: relative; z-index: 2;">게임 프리뷰</div>
+                        </div>
+                        <div class="tech-stack">
+                            <span class="tech-item">p5.js</span>
+                            <span class="tech-item">HTML5</span>
+                            <span class="tech-item">JavaScript</span>
+                            <span class="tech-item">LocalStorage</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Game Content -->
+    <section class="section">
+        <div class="container">
+            <div class="section-content">
+                <h2 class="section-title">게임 내용</h2>
+                <div class="content-grid">
+                    <div class="content-visual">
+                        <ul class="feature-list">
+                            <li><strong>실시간 시간 시스템:</strong> 30초 = 1게임 시간으로 낮과 밤이 자연스럽게 전환</li>
+                            <li><strong>운명의 동전:</strong> 7일마다 건강도 ±20 변화를 결정</li>
+                            <li><strong>픽셀아트 배경:</strong> 낮과 밤의 아름다운 도시 풍경</li>
+                            <li><strong>영구적 결과:</strong> 사망 시 게임 재시작 불가</li>
+                            <li><strong>미니멀 UI:</strong> 건강도, 경과 시간, 남은 시간 표시</li>
+                        </ul>
+                    </div>
+                    <div class="content-text">
+                        <h3 style="margin-bottom: 1rem; color: #667eea;">게임플레이 특징</h3>
+                        <p style="margin-bottom: 1rem;">
+                            전통적인 게임과 달리 플레이어의 적극적인 조작보다는 <strong>관찰과 기다림</strong>에 중점을 둡니다. 
+                        </p>
+                        <p style="margin-bottom: 1rem;">
+                            창밖 풍경을 바라보며 시간의 흐름을 느끼고, 정해진 주기마다 찾아오는 <strong>선택의 순간</strong>을 통해 긴장감을 조성합니다.
+                        </p>
+                        <p>
+                            건강도 0-100 사이에서 완치(100) 또는 사망(0)에 도달할 때까지 계속되는 <strong>확률적 서사</strong>를 경험합니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Intent and Significance -->
+    <section class="section">
+        <div class="container">
+            <div class="section-content">
+                <h2 class="section-title">의도 및 의의</h2>
+                <div class="content-grid">
+                    <div class="content-text">
+                        <h3 style="margin-bottom: 1rem; color: #667eea;">예술적 의도</h3>
+                        <p style="margin-bottom: 1rem;">
+                            <strong>시간성과 유한성:</strong> 실제 시간의 흐름과 게임 내 시간을 연결하여 플레이어가 시간의 소중함을 체감하도록 합니다.
+                        </p>
+                        <p style="margin-bottom: 1rem;">
+                            <strong>불확실성의 미학:</strong> 동전 던지기라는 단순한 확률 게임을 통해 인생의 예측 불가능성을 표현합니다.
+                        </p>
+                        <p>
+                            <strong>관조적 체험:</strong> 빠른 액션 대신 느린 관찰을 통해 명상적이고 성찰적인 경험을 제공합니다.
+                        </p>
+                    </div>
+                    <div class="content-text">
+                        <h3 style="margin-bottom: 1rem; color: #667eea;">게임의 의의</h3>
+                        <p style="margin-bottom: 1rem;">
+                            <strong>인터랙티브 아트:</strong> 게임 매체를 활용한 새로운 형태의 디지털 아트 작품으로서의 가능성을 탐구합니다.
+                        </p>
+                        <p style="margin-bottom: 1rem;">
+                            <strong>감정적 몰입:</strong> 영구적 결과(사망 시 재시작 불가)를 통해 플레이어의 선택에 실질적 무게를 부여합니다.
+                        </p>
+                        <p>
+                            <strong>시간 예술:</strong> 실시간으로 변화하는 환경을 통해 시간 자체를 예술적 매개체로 활용합니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Composition -->
+    <section class="section">
+        <div class="container">
+            <div class="section-content">
+                <h2 class="section-title">작품 구성</h2>
+                <div class="content-grid">
+                    <div class="content-text">
+                        <h3 style="margin-bottom: 1rem; color: #667eea;">기술적 구현</h3>
+                        <ul class="feature-list">
+                            <li><strong>p5.js 캔버스:</strong> 실시간 그래픽 렌더링</li>
+                            <li><strong>이미지 전환 시스템:</strong> 시간에 따른 낮/밤 배경 변경</li>
+                            <li><strong>게임 상태 관리:</strong> 건강도, 시간, 동전 던지기 로직</li>
+                            <li><strong>영속성 구현:</strong> localStorage를 통한 사망 상태 저장</li>
+                            <li><strong>반응형 디자인:</strong> 다양한 화면 크기 대응</li>
+                        </ul>
+                    </div>
+                    <div class="content-text">
+                        <h3 style="margin-bottom: 1rem; color: #667eea;">시각적 구성</h3>
+                        <ul class="feature-list">
+                            <li><strong>픽셀아트 배경:</strong> 도시와 강, 다리가 있는 풍경</li>
+                            <li><strong>병원 창문 프레임:</strong> 몰입감을 위한 시점 설정</li>
+                            <li><strong>미니멀 UI:</strong> 게임 정보를 간결하게 표시</li>
+                            <li><strong>글래스모피즘:</strong> 반투명 효과로 현대적 디자인</li>
+                            <li><strong>타이포그래피:</strong> Georgia 서체로 클래식한 느낌</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- User Scenario -->
+    <section class="section">
+        <div class="container">
+            <div class="section-content">
+                <h2 class="section-title">사용자 시나리오</h2>
+                <div class="scenario-flow">
+                    <div class="scenario-step">
+                        <div class="step-number">1</div>
+                        <h4>게임 시작</h4>
+                        <p>병원 병실에서 창밖을 바라보는 환자의 시점으로 게임이 시작됩니다. 건강도는 50으로 설정됩니다.</p>
+                    </div>
+                    <div class="scenario-step">
+                        <div class="step-number">2</div>
+                        <h4>시간 관찰</h4>
+                        <p>창밖 풍경이 실시간으로 낮과 밤을 반복하며 변화합니다. 7일을 기다리며 상황을 관찰합니다.</p>
+                    </div>
+                    <div class="scenario-step">
+                        <div class="step-number">3</div>
+                        <h4>운명의 선택</h4>
+                        <p>7일마다 "운명의 동전 던지기" 버튼이 활성화됩니다. 클릭하면 건강도가 ±20 변합니다.</p>
+                    </div>
+                    <div class="scenario-step">
+                        <div class="step-number">4</div>
+                        <h4>결과 확인</h4>
+                        <p>건강도가 100에 도달하면 완치되어 게임이 끝나고, 0에 도달하면 사망으로 게임이 영구 종료됩니다.</p>
+                    </div>
+                    <div class="scenario-step">
+                        <div class="step-number">5</div>
+                        <h4>성찰의 시간</h4>
+                        <p>게임 결과에 따라 플레이어는 시간, 선택, 운명에 대해 성찰하는 시간을 갖게 됩니다.</p>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 3rem;">
+                    <button class="play-button" onclick="window.open('hospital_art_game.html', '_blank')">
+                        게임 체험하기
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Parallax effect
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.parallax-element');
+            
+            parallaxElements.forEach((element, index) => {
+                const speed = 0.5 + index * 0.1;
+                element.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+
+        // Fade in on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.content-text, .content-visual, .scenario-step').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

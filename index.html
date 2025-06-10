@@ -14,8 +14,8 @@
         body {
             font-family: 'Georgia', serif;
             line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            background: linear-gradient(135deg, #000000 0%, #333333 100%);
             overflow-x: hidden;
         }
 
@@ -32,8 +32,8 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), 
-                        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%23334155" width="1200" height="800"/><rect fill="%23475569" x="300" y="200" width="600" height="400" rx="10"/><rect fill="%2387ceeb" x="320" y="220" width="560" height="360"/></svg>');
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.8)), 
+                        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%23000000" width="1200" height="800"/><rect fill="%23333333" x="300" y="200" width="600" height="400" rx="10"/><rect fill="%23ffffff" x="320" y="220" width="560" height="360"/></svg>');
             background-size: cover;
             background-position: center;
             color: white;
@@ -47,7 +47,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(45deg, rgba(102, 126, 234, 0.8), rgba(118, 75, 162, 0.8));
+            background: linear-gradient(45deg, rgba(0, 0, 0, 0.8), rgba(51, 51, 51, 0.8));
             animation: breathe 4s ease-in-out infinite;
         }
 
@@ -65,7 +65,7 @@
             font-size: 4rem;
             font-weight: 300;
             margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
             animation: fadeInUp 1s ease-out;
         }
 
@@ -141,7 +141,7 @@
             transform: translateX(-50%);
             width: 60px;
             height: 3px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            background: linear-gradient(90deg, #ffffff, #cccccc);
             border-radius: 2px;
         }
 
@@ -160,7 +160,7 @@
             backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: white;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         .content-visual {
@@ -175,7 +175,7 @@
         .game-preview {
             width: 100%;
             height: 300px;
-            background: linear-gradient(45deg, #1e293b, #334155);
+            background: linear-gradient(45deg, #000000, #333333);
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -194,7 +194,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect fill="%231e293b" width="400" height="300"/><rect fill="%23475569" x="50" y="50" width="300" height="200" rx="5"/><rect fill="%2387ceeb" x="60" y="60" width="280" height="180"/><circle fill="%23fbbf24" cx="200" cy="80" r="20"/></svg>');
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect fill="%23000000" width="400" height="300"/><rect fill="%23333333" x="50" y="50" width="300" height="200" rx="5"/><rect fill="%23ffffff" x="60" y="60" width="280" height="180"/><circle fill="%23000000" cx="200" cy="80" r="20"/></svg>');
             background-size: cover;
             opacity: 0.7;
         }
@@ -209,13 +209,14 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
             padding-left: 2rem;
+            color: white;
         }
 
         .feature-list li::before {
             content: '▶';
             position: absolute;
             left: 0;
-           
+            color: white;
             font-size: 0.8rem;
         }
 
@@ -227,10 +228,10 @@
         }
 
         .tech-item {
-            background: rgba(102, 126, 234, 0.2);
+            background: rgba(255, 255, 255, 0.2);
             padding: 0.5rem 1rem;
             border-radius: 20px;
-            border: 1px solid rgba(102, 126, 234, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             color: white;
             font-size: 0.9rem;
         }
@@ -255,11 +256,11 @@
 
         .scenario-step:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
         }
 
         .scenario-step .step-number {
-            background: linear-gradient(45deg, #667eea, #764ba2);
+            background: linear-gradient(45deg, #000000, #333333);
             color: white;
             width: 40px;
             height: 40px;
@@ -269,18 +270,19 @@
             justify-content: center;
             margin: 0 auto 1rem;
             font-weight: bold;
+            border: 2px solid white;
         }
 
         .play-button {
             display: inline-block;
-            background: linear-gradient(45deg, #667eea, #764ba2);
+            background: linear-gradient(45deg, #000000, #333333);
             color: white;
             padding: 1rem 2rem;
             border-radius: 25px;
             text-decoration: none;
             font-weight: bold;
             transition: all 0.3s ease;
-            border: none;
+            border: 2px solid white;
             cursor: pointer;
             font-size: 1.1rem;
             margin-top: 1rem;
@@ -288,7 +290,8 @@
 
         .play-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+            background: linear-gradient(45deg, #333333, #555555);
         }
 
         /* Responsive */
@@ -350,7 +353,7 @@
         <div class="header-content">
             <h1 class="main-title">창<br><span style="font-size: 2rem; font-style: italic;">The Window</span></h1>
             <p class="subtitle">시간과 우연이 만나는 인터랙티브 아트 게임</p>
-            <button class="play-button" onclick="window.open('hospital_art_game.html', '_blank')">게임 플레이</button>
+            <button class="play-button" onclick="window.open('https://editor.p5js.org/asa3557/full/Pgkf69EbQ', '_blank')">게임 플레이</button>
         </div>
         <div class="scroll-indicator">
             <div style="color: white; font-size: 2rem;">↓</div>
@@ -364,7 +367,7 @@
                 <h2 class="section-title">게임 개요</h2>
                 <div class="content-grid">
                     <div class="content-text">
-                        <h3 style="margin-bottom: 1rem; color:;">핵심 컨셉</h3>
+                        <h3 style="margin-bottom: 1rem; color: white;">핵심 컨셉</h3>
                         <p style="margin-bottom: 1rem;">
                             <strong>창(The Window)</strong>은 병원 창가에서 바라보는 풍경을 통해 시간의 흐름과 인생의 불확실성을 탐구하는 인터랙티브 아트 게임입니다.
                         </p>
@@ -399,11 +402,11 @@
                 <div class="content-grid">
                     <div class="content-visual">
                         <ul class="feature-list">
-                            <li><strong>실시간 시간 시스템:</strong> 30초 = 1게임 시간으로 낮과 밤이 자연스럽게 전환</li>
-                            <li><strong>운명의 동전:</strong> 7일마다 건강도 ±20 변화를 결정</li>
-                            <li><strong>픽셀아트 배경:</strong> 낮과 밤의 아름다운 도시 풍경</li>
-                            <li><strong>영구적 결과:</strong> 사망 시 게임 재시작 불가</li>
-                            <li><strong>미니멀 UI:</strong> 건강도, 경과 시간, 남은 시간 표시</li>
+                            <li><strong style="color: white;">실시간 시간 시스템:</strong> 현실시간을 기반으로 낮과 밤이 자연스럽게 전환</li>
+                            <li><strong style="color: white;">운명의 동전:</strong> 7일마다 건강도 ±20 변화를 결정</li>
+                            <li><strong style="color: white;">픽셀아트 배경:</strong> 낮과 밤의 아름다운 도시 풍경</li>
+                            <li><strong style="color: white;">영구적 결과:</strong> 사망 시 게임 재시작 불가</li>
+                            <li><strong style="color: white;">미니멀 UI:</strong> 건강도, 경과 시간, 남은 시간 표시</li>
                         </ul>
                     </div>
                     <div class="content-text">
@@ -480,8 +483,6 @@
                             <li><strong>픽셀아트 배경:</strong> 도시와 강, 다리가 있는 풍경</li>
                             <li><strong>병원 창문 프레임:</strong> 몰입감을 위한 시점 설정</li>
                             <li><strong>미니멀 UI:</strong> 게임 정보를 간결하게 표시</li>
-                            <li><strong>글래스모피즘:</strong> 반투명 효과로 현대적 디자인</li>
-                            <li><strong>타이포그래피:</strong> Georgia 서체로 클래식한 느낌</li>
                         </ul>
                     </div>
                 </div>
@@ -523,7 +524,7 @@
                 </div>
                 
                 <div style="text-align: center; margin-top: 3rem;">
-                    <button class="play-button" onclick="window.open('hospital_art_game.html', '_blank')">
+                    <button class="play-button" onclick="window.open('https://editor.p5js.org/asa3557/full/Pgkf69EbQ', '_blank')">
                         게임 체험하기
                     </button>
                 </div>
